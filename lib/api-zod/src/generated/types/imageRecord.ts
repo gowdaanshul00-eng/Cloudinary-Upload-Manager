@@ -5,9 +5,6 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
-export interface HealthStatus {
-  status: string;
-}
 
 export interface ImageRecord {
   id: number;
@@ -15,18 +12,5 @@ export interface ImageRecord {
   cloudinaryUrl: string;
   publicId: string;
   originalFilename: string;
-  createdAt: string;
+  createdAt: Date;
 }
-
-export interface ErrorResponse {
-  error: string;
-}
-
-export interface SuccessResponse {
-  success: boolean;
-}
-
-export type UploadImageBody = {
-  file: Blob;
-  label: string;
-};

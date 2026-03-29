@@ -14,3 +14,44 @@ import * as zod from "zod";
 export const HealthCheckResponse = zod.object({
   status: zod.string(),
 });
+
+/**
+ * @summary List all uploaded images
+ */
+export const ListImagesResponseItem = zod.object({
+  id: zod.number(),
+  label: zod.string(),
+  cloudinaryUrl: zod.string(),
+  publicId: zod.string(),
+  originalFilename: zod.string(),
+  createdAt: zod.coerce.date(),
+});
+export const ListImagesResponse = zod.array(ListImagesResponseItem);
+
+/**
+ * @summary Upload an image to Cloudinary with auto-enhancement
+ */
+export const UploadImageBody = zod.object({
+  file: zod.instanceof(File),
+  label: zod.string(),
+});
+
+export const UploadImageResponse = zod.object({
+  id: zod.number(),
+  label: zod.string(),
+  cloudinaryUrl: zod.string(),
+  publicId: zod.string(),
+  originalFilename: zod.string(),
+  createdAt: zod.coerce.date(),
+});
+
+/**
+ * @summary Delete an image record
+ */
+export const DeleteImageParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const DeleteImageResponse = zod.object({
+  success: zod.boolean(),
+});

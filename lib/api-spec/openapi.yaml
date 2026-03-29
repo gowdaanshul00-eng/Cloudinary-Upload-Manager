@@ -1,6 +1,5 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
   description: API specification
@@ -10,6 +9,8 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: images
+    description: Image upload and management
 paths:
   /healthz:
     get:
@@ -24,6 +25,71 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /images:
+    get:
+      operationId: listImages
+      tags: [images]
+      summary: List all uploaded images
+      responses:
+        "200":
+          description: List of images
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ImageRecord"
+  /images/upload:
+    post:
+      operationId: uploadImage
+      tags: [images]
+      summary: Upload an image to Cloudinary with auto-enhancement
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                label:
+                  type: string
+              required:
+                - file
+                - label
+      responses:
+        "200":
+          description: Uploaded image info
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImageRecord"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /images/{id}:
+    delete:
+      operationId: deleteImage
+      tags: [images]
+      summary: Delete an image record
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
 components:
   schemas:
     HealthStatus:
@@ -33,4 +99,40 @@ components:
           type: string
       required:
         - status
-
+    ImageRecord:
+      type: object
+      properties:
+        id:
+          type: integer
+        label:
+          type: string
+        cloudinaryUrl:
+          type: string
+        publicId:
+          type: string
+        originalFilename:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - label
+        - cloudinaryUrl
+        - publicId
+        - originalFilename
+        - createdAt
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+      required:
+        - success

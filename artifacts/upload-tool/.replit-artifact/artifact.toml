@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Image Upload Tool"
+version = "1.0.0"
+id = "artifacts/upload-tool"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 22823
+
+[services.development]
+run = "pnpm --filter @workspace/upload-tool run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/upload-tool", "run", "build" ]
+publicDir = "artifacts/upload-tool/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "22823"
+BASE_PATH = "/"
