@@ -1,0 +1,162 @@
+Build a full-stack website project that closely replicates the design, layout, and functionality of https://www.johncooper.org/ with pixel-accurate precision.
+
+IMPORTANT: This is for UI/UX replication and structure only. Do NOT copy private systems, authentication logic, or restricted backend services. Recreate frontend design and build your own backend where needed.
+
+--------------------------------------------------
+
+1. FRONTEND REPLICATION (PIXEL PERFECT)
+- Recreate the entire UI/UX of the site:
+  - Header, navigation, dropdown menus
+  - Hero sections, banners, typography
+  - Cards, grids, spacing, colors, buttons
+  - Footer and layout structure
+- Ensure pixel-perfect similarity (spacing, font sizes, alignment).
+- Fully responsive (mobile, tablet, desktop).
+- Use React (preferred) or clean HTML/CSS/JS.
+
+--------------------------------------------------
+
+2. REQUIRED PAGES (MUST MATCH THESE LINKS)
+
+A. MAIN SITE STRUCTURE
+- Homepage
+- About
+- Admissions
+- Academics
+- News/Events
+
+B. SPECIFIC BUTTON ROUTES (IMPORTANT)
+
+1. LOGIN PAGE (UI ONLY — DO NOT CLONE AUTH SYSTEM)
+Reference:
+https://johncooper.myschoolapp.com/app?svcid=edu#login
+
+- Recreate the login page design only:
+  - Email field
+  - Password field
+  - Login button
+  - Clean modern UI
+- Build a dummy authentication system (local only, no scraping or external login connection).
+
+--------------------------------------------------
+
+2. VISIT BUTTON PAGE
+Route: /visit
+
+Reference:
+https://www.johncooper.org/page/admission/visit-cooper
+
+- Replicate layout, sections, images, spacing, and typography.
+- Include forms or call-to-action UI if present.
+
+--------------------------------------------------
+
+3. INQUIRE BUTTON PAGE
+Route: /inquire
+
+Reference:
+https://www.johncooper.org/page/admission/inquire-online
+
+- Recreate full form UI:
+  - Input fields
+  - Dropdowns
+  - Submit button
+- Backend should store form data locally (or simple database).
+
+--------------------------------------------------
+
+4. APPLY BUTTON PAGE
+Route: /apply
+
+Reference:
+https://www.johncooper.org/page/admission/apply
+
+- Replicate layout and CTA structure.
+- Include form or redirect simulation if needed.
+
+--------------------------------------------------
+
+3. CLOUDINARY IMAGE ENHANCEMENT (VERY IMPORTANT)
+
+Integrate Cloudinary so ALL uploaded images are automatically enhanced.
+
+A. INSTALL:
+npm install cloudinary multer
+
+B. BACKEND SETUP (Node.js / Express):
+- Create /upload endpoint
+
+C. CONFIGURATION:
+
+const cloudinary = require('cloudinary').v2;
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET
+});
+
+D. IMAGE PROCESSING:
+- On upload, automatically apply:
+
+{
+  quality: "auto",
+  fetch_format: "auto",
+  effect: "viesus_correct"
+}
+
+- If image is low resolution, apply upscale.
+
+E. RETURN:
+- Store and return ONLY the enhanced Cloudinary URL.
+- Display enhanced images everywhere on frontend.
+
+--------------------------------------------------
+
+4. ENVIRONMENT VARIABLES
+
+Create a .env file:
+
+CLOUD_NAME=your_cloud_name
+API_KEY=your_api_key
+API_SECRET=your_api_secret
+
+- Clearly show where to paste these in the project.
+
+--------------------------------------------------
+
+5. PERFORMANCE + UX
+- Lazy load images
+- Use Cloudinary auto optimization
+- Fast loading speed
+- Clean animations (optional but modern)
+
+--------------------------------------------------
+
+6. FINAL RESULT
+
+- Pixel-perfect UI clone (structure/design)
+- Fully working routes:
+  /login
+  /visit
+  /inquire
+  /apply
+- Working image upload system with:
+  → AI enhancement
+  → Sharpening, brightness correction, clarity boost
+
+--------------------------------------------------
+
+7. AFTER BUILD
+
+- Clearly tell me:
+  1. Where to paste Cloudinary API keys
+  2. How to run the project in Replit
+  3. Ensure everything runs without errors
+
+- Make code clean, modular, and production-ready.
+
+--------------------------------------------------
+
+IMPORTANT RULE:
+Do NOT attempt to scrape or replicate restricted/private backend systems. Only replicate UI/UX and build original backend logic.
