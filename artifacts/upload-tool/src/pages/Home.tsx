@@ -2,11 +2,50 @@ import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { ChevronRight, ChevronLeft, ChevronDown, Play, MapPin } from "lucide-react";
 import { useImages, resolveImage } from "../hooks/useImages";
+import heroImg1 from "@assets/IMG_8420_1774822985971.jpeg";
+import videoThumb from "@assets/IMG_8405_1774822985971.jpeg";
 
 const HERO_SLIDES = [
-  { category: "Cooper Faculty", title: "Dedicated and Caring", img: "image1", idx: 0 },
-  { category: "Cooper Students", title: "Growing with Purpose", img: "image2", idx: 1 },
-  { category: "Cooper Community", title: "Shaping Tomorrow's Leaders", img: "image3", idx: 2 },
+  {
+    img: heroImg1,
+    useLocal: true,
+    cloudLabel: "image1",
+    idx: 0,
+    title: "Dedicated and Caring",
+    subtitle: "Fostering an environment with highly qualified and dynamic educators",
+  },
+  {
+    img: null,
+    useLocal: false,
+    cloudLabel: "image2",
+    idx: 1,
+    title: "Growing with Purpose",
+    subtitle: "Empowering students to reach their full academic and personal potential",
+  },
+  {
+    img: null,
+    useLocal: false,
+    cloudLabel: "image3",
+    idx: 2,
+    title: "Academic Excellence",
+    subtitle: "Rigorous, college-preparatory programs for students in every grade",
+  },
+  {
+    img: null,
+    useLocal: false,
+    cloudLabel: "image4",
+    idx: 3,
+    title: "A Vibrant Community",
+    subtitle: "Building character through collaboration, creativity, and respect",
+  },
+  {
+    img: null,
+    useLocal: false,
+    cloudLabel: "image5",
+    idx: 4,
+    title: "Your Journey Begins Here",
+    subtitle: "Discover what makes The John Cooper School uniquely extraordinary",
+  },
 ];
 
 const NEWS_ITEMS = [
@@ -43,11 +82,11 @@ const NEWS_ITEMS = [
 ];
 
 const EVENTS = [
-  { month: "APR", day: "1",  title: "Fine Arts Festival",               location: "Quarry Performing Arts/Gymnasium" },
-  { month: "APR", day: "2",  title: "Early Release",                    location: "" },
-  { month: "APR", day: "2",  title: "Cooper Day",                       location: "Quarry Performing Arts/Dance Studio-Music Room" },
-  { month: "APR", day: "3",  title: "All School Holiday",               location: "" },
-  { month: "APR", day: "5",  title: "Parents Annual Meeting",           location: "Quarry Performing Arts/Main" },
+  { month: "APR", day: "1",  title: "Fine Arts Festival",                location: "Quarry Performing Arts/Gymnasium" },
+  { month: "APR", day: "2",  title: "Early Release",                     location: "" },
+  { month: "APR", day: "2",  title: "Cooper Day",                        location: "Quarry Performing Arts/Dance Studio-Music Room" },
+  { month: "APR", day: "3",  title: "All School Holiday",                location: "" },
+  { month: "APR", day: "5",  title: "Parents Annual Meeting",            location: "Quarry Performing Arts/Main" },
   { month: "APR", day: "5",  title: "Upper School Annual Choir Concert", location: "Quarry Performing Arts/Main" },
 ];
 
@@ -88,84 +127,99 @@ export default function Home() {
     return () => clearInterval(t);
   }, []);
 
+  const currentSlide = HERO_SLIDES[slide];
+
   return (
     <div className="min-h-screen bg-white">
 
-      {/* ── Hero ── */}
-      <section className="relative h-[82vh] min-h-[560px] overflow-hidden">
+      {/* ── Hero Carousel ── */}
+      <section className="relative w-full overflow-hidden" style={{ height: "62vw", minHeight: 340, maxHeight: 620 }}>
         {HERO_SLIDES.map((s, i) => (
           <div
             key={i}
             className={`absolute inset-0 transition-opacity duration-1000 ${i === slide ? "opacity-100" : "opacity-0"}`}
           >
             <img
-              src={resolveImage(images, s.img, s.idx)}
+              src={s.useLocal && s.img ? s.img : resolveImage(images, s.cloudLabel, s.idx)}
               alt={s.title}
               className="w-full h-full object-cover object-center"
+              loading={i === 0 ? "eager" : "lazy"}
             />
-            <div className="absolute inset-0 bg-black/45" />
+            {/* Gradient: transparent top → dark bottom for text legibility */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
           </div>
         ))}
 
-        {/* Side nav arrows */}
+        {/* Slide nav arrows */}
         <button
           onClick={() => setSlide((s) => (s - 1 + HERO_SLIDES.length) % HERO_SLIDES.length)}
-          className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 z-10 text-white/60 hover:text-white transition-colors"
-          aria-label="Previous slide"
+          className="absolute left-2 top-1/2 -translate-y-1/2 z-10 text-white/70 hover:text-white transition-colors p-1"
+          aria-label="Previous"
         >
-          <ChevronLeft size={34} strokeWidth={1.5} />
+          <ChevronLeft size={28} strokeWidth={2} />
         </button>
         <button
           onClick={() => setSlide((s) => (s + 1) % HERO_SLIDES.length)}
-          className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 z-10 text-white/60 hover:text-white transition-colors"
-          aria-label="Next slide"
+          className="absolute right-2 top-1/2 -translate-y-1/2 z-10 text-white/70 hover:text-white transition-colors p-1"
+          aria-label="Next"
         >
-          <ChevronRight size={34} strokeWidth={1.5} />
+          <ChevronRight size={28} strokeWidth={2} />
         </button>
 
-        {/* Hero text + CTAs — centered */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-8 md:px-16">
-          <h1 className="text-4xl md:text-6xl font-bold text-white font-serif leading-tight mb-2 drop-shadow-md">
-            {HERO_SLIDES[slide].title}
+        {/* Bottom-left text */}
+        <div className="absolute bottom-10 left-5 right-16 z-10">
+          <h1 className="text-2xl md:text-4xl font-bold text-white font-serif leading-snug mb-1 drop-shadow">
+            {currentSlide.title}
           </h1>
-          <p className="text-white/85 text-sm md:text-base mb-8 tracking-widest uppercase font-light">
-            {HERO_SLIDES[slide].category}
+          <p className="text-white/85 text-xs md:text-sm leading-relaxed drop-shadow">
+            {currentSlide.subtitle}
           </p>
-
-          {/* Play Video */}
-          <button className="flex items-center gap-3 mb-6 group" aria-label="Play video">
-            <span className="w-13 h-13 rounded-full bg-[#1e4d2b] flex items-center justify-center group-hover:bg-[#163820] transition-colors shadow-lg border border-white/20"
-              style={{ width: 52, height: 52 }}>
-              <Play size={20} fill="white" className="text-white ml-0.5" />
-            </span>
-            <span className="text-white text-sm font-medium tracking-wide">Play Video</span>
-          </button>
-
-          {/* Cooper Experience */}
-          <Link
-            href="/about"
-            className="px-8 py-2.5 bg-[#1e4d2b] text-white text-sm font-semibold tracking-wide hover:bg-[#163820] transition-colors shadow"
-          >
-            Cooper Experience
-          </Link>
         </div>
 
-        {/* Slide dots */}
-        <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-2.5 z-10">
+        {/* Dots */}
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-10">
           {HERO_SLIDES.map((_, i) => (
             <button
               key={i}
               onClick={() => setSlide(i)}
-              className={`rounded-full transition-all duration-300 ${i === slide ? "bg-white w-3 h-3" : "bg-white/40 w-2.5 h-2.5"}`}
+              className={`rounded-full transition-all duration-300 ${
+                i === slide ? "bg-white w-3 h-3" : "bg-white/45 w-2.5 h-2.5"
+              }`}
             />
           ))}
         </div>
       </section>
 
+      {/* ── Cooper Experience ── */}
+      <section className="py-7 bg-white">
+        <div className="max-w-sm mx-auto px-5 flex flex-col items-center">
+          {/* Video thumbnail */}
+          <div className="w-full rounded-sm overflow-hidden mb-5 shadow-sm">
+            <img
+              src={videoThumb}
+              alt="Cooper Experience"
+              className="w-full h-44 md:h-56 object-cover object-center"
+            />
+          </div>
+
+          {/* Heading */}
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 font-serif text-center leading-tight">
+            Cooper<br />Experience
+          </h2>
+
+          {/* Divider */}
+          <div className="w-10 h-0.5 bg-gray-300 my-4" />
+
+          {/* Play Video button — orange */}
+          <button className="px-10 py-3 bg-[#D9512C] text-white text-sm font-semibold rounded-full hover:bg-[#C14420] transition-colors shadow-sm">
+            Play Video
+          </button>
+        </div>
+      </section>
+
       {/* ── Recent News ── */}
-      <section className="py-6 bg-white border-b border-gray-100">
+      <section className="py-6 bg-white border-t border-gray-100">
         <div className="max-w-2xl mx-auto px-4">
-          {/* Header row */}
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-[17px] font-bold text-gray-900">Recent News</h2>
             <Link href="/news" className="text-gray-400 hover:text-[#1e4d2b] transition-colors -mr-1">
@@ -173,7 +227,6 @@ export default function Home() {
             </Link>
           </div>
 
-          {/* Single news card */}
           <Link href="/news" className="flex gap-3.5 group">
             <div className="relative shrink-0 w-28 h-20 overflow-hidden rounded-sm">
               <img
@@ -195,15 +248,12 @@ export default function Home() {
             </div>
           </Link>
 
-          {/* News carousel dots */}
           <div className="flex gap-1.5 mt-4">
             {NEWS_ITEMS.map((_, i) => (
               <button
                 key={i}
                 onClick={() => setNewsSlide(i)}
-                className={`rounded-full transition-all duration-200 ${
-                  i === newsSlide ? "bg-gray-700 w-2 h-2" : "bg-gray-300 w-2 h-2"
-                }`}
+                className={`rounded-full transition-all ${i === newsSlide ? "bg-gray-700 w-2 h-2" : "bg-gray-300 w-2 h-2"}`}
               />
             ))}
           </div>
@@ -211,9 +261,8 @@ export default function Home() {
       </section>
 
       {/* ── Upcoming Events ── */}
-      <section className="py-6 bg-white border-b border-gray-100">
+      <section className="py-6 bg-white border-t border-gray-100">
         <div className="max-w-2xl mx-auto px-4">
-          {/* Header row */}
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-[17px] font-bold text-gray-900">Upcoming Events</h2>
             <Link
@@ -224,13 +273,12 @@ export default function Home() {
             </Link>
           </div>
 
-          {/* Events list */}
           <div>
             {EVENTS.map((ev, i) => (
               <Link
                 key={i}
                 href="/news"
-                className={`flex gap-4 py-3.5 hover:bg-gray-50/80 transition-colors -mx-1 px-1 ${
+                className={`flex gap-4 py-3.5 hover:bg-gray-50 transition-colors -mx-1 px-1 ${
                   i < EVENTS.length - 1 ? "border-b border-gray-100" : ""
                 }`}
               >
@@ -253,7 +301,7 @@ export default function Home() {
       </section>
 
       {/* ── Cooper At A Glance ── */}
-      <section className="py-7 bg-gray-50 border-b border-gray-100">
+      <section className="py-7 bg-gray-50 border-t border-gray-100">
         <div className="max-w-2xl mx-auto px-4">
           <h2 className="text-[17px] font-bold text-gray-900 mb-5">Cooper At A Glance</h2>
 
@@ -263,7 +311,7 @@ export default function Home() {
               Pre-K through Grade 12 school in the Greater Houston Area.
             </p>
             <div className="shrink-0 flex items-start gap-2">
-              <MapPin size={15} className="text-[#1e4d2b] mt-1" />
+              <MapPin size={15} className="text-[#1e4d2b] mt-1 shrink-0" />
               <div>
                 <div className="text-3xl font-bold text-gray-900 leading-none">1,378</div>
                 <div className="text-[10px] text-gray-400 mt-0.5 uppercase tracking-wide">Students</div>
@@ -271,11 +319,8 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Experience Cooper accordion */}
-          <div className="mt-3 mb-1">
-            <p className="text-[11px] text-gray-400 uppercase tracking-widest font-medium mb-2">
-              Experience Cooper
-            </p>
+          <div className="mb-1">
+            <p className="text-[11px] text-gray-400 uppercase tracking-widest font-medium mb-2">Experience Cooper</p>
             <div className="flex flex-col gap-px">
               {ACCORDION_ITEMS.map((item) => (
                 <div key={item.id}>
@@ -309,7 +354,7 @@ export default function Home() {
       </section>
 
       {/* ── School Info Bar ── */}
-      <section className="py-5 bg-white">
+      <section className="py-5 bg-white border-t border-gray-100">
         <div className="max-w-2xl mx-auto px-4 text-center">
           <p className="text-[13px] font-bold text-gray-800">The John Cooper School</p>
           <p className="text-[12px] text-gray-500 mt-0.5">One John Cooper Drive, The Woodlands, TX</p>

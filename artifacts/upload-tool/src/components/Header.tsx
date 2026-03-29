@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { Menu, X, ChevronDown, Search, Facebook, Instagram, Twitter, Youtube } from "lucide-react";
+import { ChevronDown, Search, Facebook, Instagram, Youtube } from "lucide-react";
+import cooperLogo from "@assets/IMG_8402_1774823072768.png";
 
 const NAV_ITEMS = [
   {
@@ -50,21 +51,30 @@ const NAV_ITEMS = [
   },
 ];
 
+function XIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-label="X (Twitter)">
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+    </svg>
+  );
+}
+
 const SOCIAL_LINKS = [
-  { Icon: Facebook, href: "#", label: "Facebook" },
-  { Icon: Instagram, href: "#", label: "Instagram" },
-  { Icon: Youtube, href: "#", label: "YouTube" },
+  { icon: <Facebook size={19} />, href: "#", label: "Facebook" },
+  { icon: <Instagram size={19} />, href: "#", label: "Instagram" },
+  { icon: <Youtube size={19} />, href: "#", label: "YouTube" },
+  { icon: <XIcon />, href: "#", label: "X" },
 ];
 
 export default function Header() {
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const [location] = useLocation();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setMobileOpen(false);
+    setMobileMenuOpen(false);
     setActiveDropdown(null);
   }, [location]);
 
@@ -79,94 +89,84 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="w-full z-50 sticky top-0">
+    <header className="w-full z-50 sticky top-0 shadow-sm">
 
-      {/* ── Top utility bar (desktop only) ── */}
-      <div className="hidden md:block bg-[#1e4d2b] text-white text-xs">
-        <div className="max-w-7xl mx-auto px-4 flex justify-between items-center h-8">
-          <span className="opacity-70">The Woodlands, Texas | K–12 | Est. 1988</span>
-          <div className="flex items-center">
-            {[
-              { label: "Login", href: "/login" },
-              { label: "Apply", href: "/apply" },
-              { label: "Visit", href: "/visit" },
-              { label: "Inquire", href: "/inquire" },
-            ].map((btn) => (
-              <Link
-                key={btn.label}
-                href={btn.href}
-                className="px-4 py-1 border-l border-white/20 hover:bg-white/10 transition-colors h-8 flex items-center font-medium tracking-wider uppercase text-[10px]"
-              >
-                {btn.label}
-              </Link>
-            ))}
-            <span className="border-r border-white/20 h-8" />
-          </div>
-        </div>
+      {/* ── Top dark bar: Menu (left) + Login (right) ── */}
+      <div className="bg-[#1a1a1a] text-white flex items-center justify-between px-4 h-11">
+        <button
+          className="flex items-center gap-2 text-sm font-medium tracking-wide hover:text-white/80 transition-colors"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Toggle navigation"
+        >
+          <svg width="18" height="14" viewBox="0 0 18 14" fill="currentColor">
+            <rect y="0" width="18" height="2" rx="1" />
+            <rect y="6" width="18" height="2" rx="1" />
+            <rect y="12" width="18" height="2" rx="1" />
+          </svg>
+          <span>Menu</span>
+        </button>
+        <Link href="/login" className="text-sm font-medium hover:text-white/80 transition-colors">
+          Login
+        </Link>
       </div>
 
-      {/* ── Mobile top bar: social icons + logo ── */}
-      <div className="md:hidden bg-white border-b border-gray-100">
-        <div className="flex items-center justify-between px-4 h-11">
+      {/* ── White branding section: Logo + Search + Social ── */}
+      <div className="bg-white border-b border-gray-100">
+        <div className="max-w-md mx-auto px-5 py-4 flex flex-col items-center gap-3 lg:max-w-7xl">
+
+          {/* Cooper logo */}
+          <Link href="/" className="block">
+            <img
+              src={cooperLogo}
+              alt="The John Cooper School"
+              className="h-16 md:h-20 w-auto object-contain"
+            />
+          </Link>
+
+          {/* Search bar */}
+          <div className="relative w-full max-w-xs lg:max-w-sm">
+            <input
+              type="text"
+              placeholder="Search"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full border border-gray-200 rounded-full px-4 py-2 text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#1e4d2b] focus:ring-1 focus:ring-[#1e4d2b] transition"
+            />
+            <button className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#1e4d2b] transition-colors" aria-label="Search">
+              <Search size={16} />
+            </button>
+          </div>
+
           {/* Social icons */}
-          <div className="flex items-center gap-1">
-            {SOCIAL_LINKS.map(({ Icon, href, label }) => (
+          <div className="flex items-center gap-5">
+            {SOCIAL_LINKS.map(({ icon, href, label }) => (
               <a
                 key={label}
                 href={href}
                 aria-label={label}
-                className="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-[#1e4d2b] transition-colors"
+                className="text-gray-600 hover:text-[#1e4d2b] transition-colors"
               >
-                <Icon size={16} />
+                {icon}
               </a>
             ))}
           </div>
 
-          {/* Cooper logo — right side */}
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-7 h-7 bg-[#1e4d2b] rounded-full flex items-center justify-center shrink-0">
-              <span className="text-white font-bold text-[10px] font-serif leading-none">JC</span>
-            </div>
-            <span className="text-[#1e4d2b] font-bold text-base font-serif tracking-tight">Cooper</span>
-          </Link>
-        </div>
-      </div>
-
-      {/* ── Main navigation bar ── */}
-      <div className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-16 md:h-20">
-
-          {/* Logo (desktop only — mobile logo is in top bar) */}
-          <Link href="/" className="hidden md:flex items-center gap-3">
-            <div className="w-12 h-12 bg-[#1e4d2b] rounded-full flex items-center justify-center shrink-0">
-              <span className="text-white font-bold text-lg font-serif">JC</span>
-            </div>
-            <div>
-              <div className="text-[#1e4d2b] font-bold text-lg leading-tight font-serif">The John Cooper School</div>
-              <div className="text-gray-500 text-xs tracking-widest uppercase">The Woodlands, Texas</div>
-            </div>
-          </Link>
-
-          {/* Desktop navigation */}
-          <nav className="hidden md:flex items-center gap-1" ref={dropdownRef}>
+          {/* Desktop nav — visible on large screens */}
+          <nav className="hidden lg:flex items-center gap-1 border-t border-gray-100 w-full justify-center pt-3" ref={dropdownRef}>
             {NAV_ITEMS.map((item) => (
               <div key={item.label} className="relative">
                 <button
                   className={`flex items-center gap-1 px-4 py-2 text-sm font-medium tracking-wide rounded transition-colors ${
                     activeDropdown === item.label
-                      ? "text-[#1e4d2b] bg-gray-100"
+                      ? "text-[#1e4d2b] bg-gray-50"
                       : "text-gray-700 hover:text-[#1e4d2b] hover:bg-gray-50"
                   }`}
                   onMouseEnter={() => setActiveDropdown(item.label)}
                   onClick={() => setActiveDropdown(activeDropdown === item.label ? null : item.label)}
                 >
                   {item.label}
-                  <ChevronDown
-                    size={14}
-                    className={`transition-transform ${activeDropdown === item.label ? "rotate-180" : ""}`}
-                  />
+                  <ChevronDown size={13} className={`transition-transform ${activeDropdown === item.label ? "rotate-180" : ""}`} />
                 </button>
-
                 {activeDropdown === item.label && (
                   <div
                     className="absolute top-full left-0 mt-1 w-52 bg-white shadow-xl border border-gray-100 rounded-sm z-50"
@@ -185,43 +185,13 @@ export default function Header() {
                 )}
               </div>
             ))}
-
-            <button
-              className="ml-2 p-2 text-gray-600 hover:text-[#1e4d2b] transition-colors"
-              onClick={() => setSearchOpen(!searchOpen)}
-              aria-label="Search"
-            >
-              <Search size={18} />
-            </button>
           </nav>
-
-          {/* Mobile: hamburger */}
-          <button
-            className="md:hidden p-2 text-[#1e4d2b] ml-auto"
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Toggle navigation"
-          >
-            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
         </div>
-
-        {/* Desktop search bar */}
-        {searchOpen && (
-          <div className="border-t border-gray-100 px-4 py-3">
-            <input
-              type="text"
-              placeholder="Search..."
-              className="w-full max-w-xl border border-gray-300 rounded px-4 py-2 text-sm focus:outline-none focus:border-[#1e4d2b]"
-              autoFocus
-              onBlur={() => setSearchOpen(false)}
-            />
-          </div>
-        )}
       </div>
 
       {/* ── Mobile menu drawer ── */}
-      {mobileOpen && (
-        <div className="md:hidden bg-white border-t border-gray-200 shadow-lg">
+      {mobileMenuOpen && (
+        <div className="lg:hidden bg-white border-t border-gray-200 shadow-lg">
           {NAV_ITEMS.map((item) => (
             <div key={item.label}>
               <button
@@ -229,10 +199,7 @@ export default function Header() {
                 onClick={() => setActiveDropdown(activeDropdown === item.label ? null : item.label)}
               >
                 {item.label}
-                <ChevronDown
-                  size={16}
-                  className={`transition-transform ${activeDropdown === item.label ? "rotate-180" : ""}`}
-                />
+                <ChevronDown size={16} className={`transition-transform ${activeDropdown === item.label ? "rotate-180" : ""}`} />
               </button>
               {activeDropdown === item.label && (
                 <div className="bg-gray-50">
@@ -249,11 +216,8 @@ export default function Header() {
               )}
             </div>
           ))}
-
-          {/* Mobile quick links */}
           <div className="flex border-t border-gray-200">
             {[
-              { label: "Login", href: "/login" },
               { label: "Apply", href: "/apply" },
               { label: "Visit", href: "/visit" },
               { label: "Inquire", href: "/inquire" },
