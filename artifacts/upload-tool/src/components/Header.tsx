@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { Menu, X, ChevronDown, Search } from "lucide-react";
+import { Menu, X, ChevronDown, Search, Facebook, Instagram, Twitter, Youtube } from "lucide-react";
 
 const NAV_ITEMS = [
   {
@@ -50,6 +50,12 @@ const NAV_ITEMS = [
   },
 ];
 
+const SOCIAL_LINKS = [
+  { Icon: Facebook, href: "#", label: "Facebook" },
+  { Icon: Instagram, href: "#", label: "Instagram" },
+  { Icon: Youtube, href: "#", label: "YouTube" },
+];
+
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -74,30 +80,65 @@ export default function Header() {
 
   return (
     <header className="w-full z-50 sticky top-0">
-      <div className="bg-[#1e4d2b] text-white text-xs">
+
+      {/* ── Top utility bar (desktop only) ── */}
+      <div className="hidden md:block bg-[#1e4d2b] text-white text-xs">
         <div className="max-w-7xl mx-auto px-4 flex justify-between items-center h-8">
           <span className="opacity-70">The Woodlands, Texas | K–12 | Est. 1988</span>
-          <div className="flex items-center gap-0">
-            <Link href="/login" className="px-4 py-1 border-l border-white/20 hover:bg-white/10 transition-colors h-8 flex items-center font-medium tracking-wider uppercase text-[10px]">
-              Login
-            </Link>
-            <Link href="/apply" className="px-4 py-1 border-l border-white/20 hover:bg-white/10 transition-colors h-8 flex items-center font-medium tracking-wider uppercase text-[10px]">
-              Apply
-            </Link>
-            <Link href="/visit" className="px-4 py-1 border-l border-white/20 hover:bg-white/10 transition-colors h-8 flex items-center font-medium tracking-wider uppercase text-[10px]">
-              Visit
-            </Link>
-            <Link href="/inquire" className="px-4 py-1 border-l border-r border-white/20 hover:bg-white/10 transition-colors h-8 flex items-center font-medium tracking-wider uppercase text-[10px]">
-              Inquire
-            </Link>
+          <div className="flex items-center">
+            {[
+              { label: "Login", href: "/login" },
+              { label: "Apply", href: "/apply" },
+              { label: "Visit", href: "/visit" },
+              { label: "Inquire", href: "/inquire" },
+            ].map((btn) => (
+              <Link
+                key={btn.label}
+                href={btn.href}
+                className="px-4 py-1 border-l border-white/20 hover:bg-white/10 transition-colors h-8 flex items-center font-medium tracking-wider uppercase text-[10px]"
+              >
+                {btn.label}
+              </Link>
+            ))}
+            <span className="border-r border-white/20 h-8" />
           </div>
         </div>
       </div>
 
+      {/* ── Mobile top bar: social icons + logo ── */}
+      <div className="md:hidden bg-white border-b border-gray-100">
+        <div className="flex items-center justify-between px-4 h-11">
+          {/* Social icons */}
+          <div className="flex items-center gap-1">
+            {SOCIAL_LINKS.map(({ Icon, href, label }) => (
+              <a
+                key={label}
+                href={href}
+                aria-label={label}
+                className="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-[#1e4d2b] transition-colors"
+              >
+                <Icon size={16} />
+              </a>
+            ))}
+          </div>
+
+          {/* Cooper logo — right side */}
+          <Link href="/" className="flex items-center gap-2">
+            <div className="w-7 h-7 bg-[#1e4d2b] rounded-full flex items-center justify-center shrink-0">
+              <span className="text-white font-bold text-[10px] font-serif leading-none">JC</span>
+            </div>
+            <span className="text-[#1e4d2b] font-bold text-base font-serif tracking-tight">Cooper</span>
+          </Link>
+        </div>
+      </div>
+
+      {/* ── Main navigation bar ── */}
       <div className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-20">
-          <Link href="/" className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-[#1e4d2b] rounded-full flex items-center justify-center">
+        <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-16 md:h-20">
+
+          {/* Logo (desktop only — mobile logo is in top bar) */}
+          <Link href="/" className="hidden md:flex items-center gap-3">
+            <div className="w-12 h-12 bg-[#1e4d2b] rounded-full flex items-center justify-center shrink-0">
               <span className="text-white font-bold text-lg font-serif">JC</span>
             </div>
             <div>
@@ -106,7 +147,8 @@ export default function Header() {
             </div>
           </Link>
 
-          <nav className="hidden lg:flex items-center gap-1" ref={dropdownRef}>
+          {/* Desktop navigation */}
+          <nav className="hidden md:flex items-center gap-1" ref={dropdownRef}>
             {NAV_ITEMS.map((item) => (
               <div key={item.label} className="relative">
                 <button
@@ -119,7 +161,10 @@ export default function Header() {
                   onClick={() => setActiveDropdown(activeDropdown === item.label ? null : item.label)}
                 >
                   {item.label}
-                  <ChevronDown size={14} className={`transition-transform ${activeDropdown === item.label ? "rotate-180" : ""}`} />
+                  <ChevronDown
+                    size={14}
+                    className={`transition-transform ${activeDropdown === item.label ? "rotate-180" : ""}`}
+                  />
                 </button>
 
                 {activeDropdown === item.label && (
@@ -144,19 +189,23 @@ export default function Header() {
             <button
               className="ml-2 p-2 text-gray-600 hover:text-[#1e4d2b] transition-colors"
               onClick={() => setSearchOpen(!searchOpen)}
+              aria-label="Search"
             >
               <Search size={18} />
             </button>
           </nav>
 
+          {/* Mobile: hamburger */}
           <button
-            className="lg:hidden p-2 text-[#1e4d2b]"
+            className="md:hidden p-2 text-[#1e4d2b] ml-auto"
             onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Toggle navigation"
           >
             {mobileOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
 
+        {/* Desktop search bar */}
         {searchOpen && (
           <div className="border-t border-gray-100 px-4 py-3">
             <input
@@ -170,8 +219,9 @@ export default function Header() {
         )}
       </div>
 
+      {/* ── Mobile menu drawer ── */}
       {mobileOpen && (
-        <div className="lg:hidden bg-white border-t border-gray-200 shadow-lg">
+        <div className="md:hidden bg-white border-t border-gray-200 shadow-lg">
           {NAV_ITEMS.map((item) => (
             <div key={item.label}>
               <button
@@ -179,7 +229,10 @@ export default function Header() {
                 onClick={() => setActiveDropdown(activeDropdown === item.label ? null : item.label)}
               >
                 {item.label}
-                <ChevronDown size={16} className={`transition-transform ${activeDropdown === item.label ? "rotate-180" : ""}`} />
+                <ChevronDown
+                  size={16}
+                  className={`transition-transform ${activeDropdown === item.label ? "rotate-180" : ""}`}
+                />
               </button>
               {activeDropdown === item.label && (
                 <div className="bg-gray-50">
@@ -196,6 +249,8 @@ export default function Header() {
               )}
             </div>
           ))}
+
+          {/* Mobile quick links */}
           <div className="flex border-t border-gray-200">
             {[
               { label: "Login", href: "/login" },

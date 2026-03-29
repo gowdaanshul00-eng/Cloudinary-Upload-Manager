@@ -1,58 +1,81 @@
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
-import { ChevronRight, ArrowRight, Calendar, ChevronLeft } from "lucide-react";
+import { ChevronRight, ChevronLeft, ChevronDown, Play, MapPin } from "lucide-react";
 import { useImages, resolveImage } from "../hooks/useImages";
 
 const HERO_SLIDES = [
-  { title: "Excellence in Education", subtitle: "Preparing Tomorrow's Leaders Today", cta: "Learn More", href: "/about" },
-  { title: "A Community of Thinkers", subtitle: "Nurturing Curiosity from Kindergarten Through 12th Grade", cta: "Explore Academics", href: "/academics" },
-  { title: "Begin Your Cooper Journey", subtitle: "Discover What Makes Cooper Different", cta: "Apply Now", href: "/apply" },
+  { category: "Cooper Faculty", title: "Dedicated and Caring", img: "image1", idx: 0 },
+  { category: "Cooper Students", title: "Growing with Purpose", img: "image2", idx: 1 },
+  { category: "Cooper Community", title: "Shaping Tomorrow's Leaders", img: "image3", idx: 2 },
 ];
 
 const NEWS_ITEMS = [
   {
-    label: "image10",
-    index: 9,
-    category: "Athletics",
-    date: "March 20, 2026",
-    title: "Hawks Baseball Team Advances to Regional Playoffs",
-    excerpt: "The Cooper Hawks baseball team secured their spot in the regional playoffs after an impressive series win, continuing their outstanding season.",
+    label: "image10", index: 9,
+    month: "FEB", day: "25",
+    title: "Cooper Career Fair",
+    excerpt: "Join us for the 4th annual Cooper Career Fair at The John Cooper School.",
   },
   {
-    label: "image11",
-    index: 10,
-    category: "Academics",
-    date: "March 18, 2026",
-    title: "Cooper Students Excel at Regional Science Olympiad",
-    excerpt: "Seven Cooper students placed in the top three at the Regional Science Olympiad, qualifying for the state competition next month.",
+    label: "image11", index: 10,
+    month: "FEB", day: "20",
+    title: "2026 Scholastic Art & Writing Awards",
+    excerpt: "Cooper students receive top recognition in regional Scholastic competition.",
   },
   {
-    label: "image12",
-    index: 11,
-    category: "Arts",
-    date: "March 15, 2026",
+    label: "image12", index: 11,
+    month: "FEB", day: "15",
     title: "Spring Fine Arts Showcase Draws Record Attendance",
-    excerpt: "The annual spring arts showcase featured over 200 student works spanning visual art, music, and performing arts.",
+    excerpt: "Annual showcase features over 200 student works spanning visual and performing arts.",
+  },
+  {
+    label: "image13", index: 12,
+    month: "FEB", day: "10",
+    title: "Hawks Basketball Team Advances to Playoffs",
+    excerpt: "Cooper's varsity basketball team clinches a playoff spot with an impressive streak.",
+  },
+  {
+    label: "image14", index: 13,
+    month: "FEB", day: "5",
+    title: "New STEM Innovation Lab Opens",
+    excerpt: "State-of-the-art facility now open to all Cooper students across grade levels.",
   },
 ];
 
 const EVENTS = [
-  { month: "APR", day: "5", title: "Open House & Campus Tour", time: "9:00 AM – 12:00 PM", href: "/visit" },
-  { month: "APR", day: "12", title: "Spring Gala Benefit Dinner", time: "6:30 PM – 10:00 PM", href: "/news" },
-  { month: "APR", day: "18", title: "AP Exam Week Begins", time: "All Day", href: "/academics" },
-  { month: "APR", day: "25", title: "Fine Arts Spring Concert", time: "7:00 PM", href: "/news" },
-  { month: "MAY", day: "3", title: "Commencement Ceremony", time: "10:00 AM", href: "/news" },
+  { month: "APR", day: "1",  title: "Fine Arts Festival",               location: "Quarry Performing Arts/Gymnasium" },
+  { month: "APR", day: "2",  title: "Early Release",                    location: "" },
+  { month: "APR", day: "2",  title: "Cooper Day",                       location: "Quarry Performing Arts/Dance Studio-Music Room" },
+  { month: "APR", day: "3",  title: "All School Holiday",               location: "" },
+  { month: "APR", day: "5",  title: "Parents Annual Meeting",           location: "Quarry Performing Arts/Main" },
+  { month: "APR", day: "5",  title: "Upper School Annual Choir Concert", location: "Quarry Performing Arts/Main" },
 ];
 
-const STATS = [
-  { value: "K–12", label: "Grades Served" },
-  { value: "1988", label: "Year Founded" },
-  { value: "14:1", label: "Student-Teacher Ratio" },
-  { value: "100%", label: "College Acceptance Rate" },
+const ACCORDION_ITEMS = [
+  {
+    id: "inquire",
+    label: "Inquire",
+    href: "/inquire",
+    content: "Have questions? Fill out our online inquiry form and a member of our admissions team will be in touch.",
+  },
+  {
+    id: "apply",
+    label: "Apply",
+    href: "/apply",
+    content: "Ready to join the Cooper community? Start your application to The John Cooper School today.",
+  },
+  {
+    id: "visit",
+    label: "Visit",
+    href: "/visit",
+    content: "Schedule a campus visit and experience Cooper's vibrant learning environment first-hand.",
+  },
 ];
 
 export default function Home() {
   const [slide, setSlide] = useState(0);
+  const [newsSlide, setNewsSlide] = useState(0);
+  const [openAccordion, setOpenAccordion] = useState<string | null>(null);
   const { data: images = [] } = useImages();
 
   useEffect(() => {
@@ -60,283 +83,244 @@ export default function Home() {
     return () => clearInterval(t);
   }, []);
 
-  const current = HERO_SLIDES[slide];
+  useEffect(() => {
+    const t = setInterval(() => setNewsSlide((s) => (s + 1) % NEWS_ITEMS.length), 4200);
+    return () => clearInterval(t);
+  }, []);
 
   return (
-    <div className="min-h-screen">
-      <section className="relative h-[78vh] min-h-[520px] overflow-hidden">
+    <div className="min-h-screen bg-white">
+
+      {/* ── Hero ── */}
+      <section className="relative h-[82vh] min-h-[560px] overflow-hidden">
         {HERO_SLIDES.map((s, i) => (
           <div
             key={i}
             className={`absolute inset-0 transition-opacity duration-1000 ${i === slide ? "opacity-100" : "opacity-0"}`}
           >
             <img
-              src={resolveImage(images, `image${i + 1}`, i)}
+              src={resolveImage(images, s.img, s.idx)}
               alt={s.title}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover object-center"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
+            <div className="absolute inset-0 bg-black/45" />
           </div>
         ))}
-        <div className="absolute inset-0 flex items-center">
-          <div className="max-w-7xl mx-auto px-6 w-full">
-            <div className="max-w-2xl">
-              <div className="text-white/80 text-sm font-medium tracking-widest uppercase mb-3">
-                The John Cooper School
-              </div>
-              <h1 className="text-4xl md:text-6xl font-bold text-white font-serif leading-tight mb-4">
-                {current.title}
-              </h1>
-              <p className="text-white/90 text-lg md:text-xl mb-8 leading-relaxed">
-                {current.subtitle}
-              </p>
-              <div className="flex gap-4 flex-wrap">
-                <Link
-                  href={current.href}
-                  className="px-7 py-3.5 bg-[#1e4d2b] text-white font-semibold rounded hover:bg-[#163820] transition-colors text-sm"
-                >
-                  {current.cta}
-                </Link>
-                <Link
-                  href="/inquire"
-                  className="px-7 py-3.5 bg-white/10 border border-white/40 text-white font-semibold rounded hover:bg-white/20 transition-colors text-sm backdrop-blur-sm"
-                >
-                  Request Information
-                </Link>
-              </div>
-            </div>
-          </div>
+
+        {/* Side nav arrows */}
+        <button
+          onClick={() => setSlide((s) => (s - 1 + HERO_SLIDES.length) % HERO_SLIDES.length)}
+          className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 z-10 text-white/60 hover:text-white transition-colors"
+          aria-label="Previous slide"
+        >
+          <ChevronLeft size={34} strokeWidth={1.5} />
+        </button>
+        <button
+          onClick={() => setSlide((s) => (s + 1) % HERO_SLIDES.length)}
+          className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 z-10 text-white/60 hover:text-white transition-colors"
+          aria-label="Next slide"
+        >
+          <ChevronRight size={34} strokeWidth={1.5} />
+        </button>
+
+        {/* Hero text + CTAs — centered */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-8 md:px-16">
+          <h1 className="text-4xl md:text-6xl font-bold text-white font-serif leading-tight mb-2 drop-shadow-md">
+            {HERO_SLIDES[slide].title}
+          </h1>
+          <p className="text-white/85 text-sm md:text-base mb-8 tracking-widest uppercase font-light">
+            {HERO_SLIDES[slide].category}
+          </p>
+
+          {/* Play Video */}
+          <button className="flex items-center gap-3 mb-6 group" aria-label="Play video">
+            <span className="w-13 h-13 rounded-full bg-[#1e4d2b] flex items-center justify-center group-hover:bg-[#163820] transition-colors shadow-lg border border-white/20"
+              style={{ width: 52, height: 52 }}>
+              <Play size={20} fill="white" className="text-white ml-0.5" />
+            </span>
+            <span className="text-white text-sm font-medium tracking-wide">Play Video</span>
+          </button>
+
+          {/* Cooper Experience */}
+          <Link
+            href="/about"
+            className="px-8 py-2.5 bg-[#1e4d2b] text-white text-sm font-semibold tracking-wide hover:bg-[#163820] transition-colors shadow"
+          >
+            Cooper Experience
+          </Link>
         </div>
 
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-6">
-          <button
-            onClick={() => setSlide((s) => (s - 1 + HERO_SLIDES.length) % HERO_SLIDES.length)}
-            className="w-9 h-9 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-white transition-colors"
-          >
-            <ChevronLeft size={18} />
-          </button>
-          <div className="flex gap-2">
-            {HERO_SLIDES.map((_, i) => (
+        {/* Slide dots */}
+        <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-2.5 z-10">
+          {HERO_SLIDES.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setSlide(i)}
+              className={`rounded-full transition-all duration-300 ${i === slide ? "bg-white w-3 h-3" : "bg-white/40 w-2.5 h-2.5"}`}
+            />
+          ))}
+        </div>
+      </section>
+
+      {/* ── Recent News ── */}
+      <section className="py-6 bg-white border-b border-gray-100">
+        <div className="max-w-2xl mx-auto px-4">
+          {/* Header row */}
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-[17px] font-bold text-gray-900">Recent News</h2>
+            <Link href="/news" className="text-gray-400 hover:text-[#1e4d2b] transition-colors -mr-1">
+              <ChevronRight size={22} />
+            </Link>
+          </div>
+
+          {/* Single news card */}
+          <Link href="/news" className="flex gap-3.5 group">
+            <div className="relative shrink-0 w-28 h-20 overflow-hidden rounded-sm">
+              <img
+                src={resolveImage(images, NEWS_ITEMS[newsSlide].label, NEWS_ITEMS[newsSlide].index)}
+                alt={NEWS_ITEMS[newsSlide].title}
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+              <div className="absolute top-0 left-0 bg-[#1e4d2b] text-white text-[9px] font-bold px-1.5 py-0.5 leading-tight">
+                {NEWS_ITEMS[newsSlide].month} {NEWS_ITEMS[newsSlide].day}
+              </div>
+            </div>
+            <div className="flex-1 min-w-0">
+              <h3 className="font-bold text-gray-900 text-sm leading-snug group-hover:text-[#1e4d2b] transition-colors">
+                {NEWS_ITEMS[newsSlide].title}
+              </h3>
+              <p className="text-gray-500 text-xs mt-1 leading-relaxed line-clamp-2">
+                {NEWS_ITEMS[newsSlide].excerpt}
+              </p>
+            </div>
+          </Link>
+
+          {/* News carousel dots */}
+          <div className="flex gap-1.5 mt-4">
+            {NEWS_ITEMS.map((_, i) => (
               <button
                 key={i}
-                onClick={() => setSlide(i)}
-                className={`w-2.5 h-2.5 rounded-full transition-all ${i === slide ? "bg-white scale-125" : "bg-white/40"}`}
+                onClick={() => setNewsSlide(i)}
+                className={`rounded-full transition-all duration-200 ${
+                  i === newsSlide ? "bg-gray-700 w-2 h-2" : "bg-gray-300 w-2 h-2"
+                }`}
               />
             ))}
           </div>
-          <button
-            onClick={() => setSlide((s) => (s + 1) % HERO_SLIDES.length)}
-            className="w-9 h-9 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-white transition-colors"
-          >
-            <ChevronRight size={18} />
-          </button>
         </div>
       </section>
 
-      <section className="bg-[#1e4d2b] text-white">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-white/20">
-            {STATS.map((stat) => (
-              <div key={stat.label} className="px-8 py-8 text-center">
-                <div className="text-3xl md:text-4xl font-bold font-serif mb-1">{stat.value}</div>
-                <div className="text-white/70 text-sm tracking-wide">{stat.label}</div>
-              </div>
+      {/* ── Upcoming Events ── */}
+      <section className="py-6 bg-white border-b border-gray-100">
+        <div className="max-w-2xl mx-auto px-4">
+          {/* Header row */}
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-[17px] font-bold text-gray-900">Upcoming Events</h2>
+            <Link
+              href="/news"
+              className="px-3 py-1 border border-[#1e4d2b] text-[#1e4d2b] text-[11px] font-semibold hover:bg-[#1e4d2b] hover:text-white transition-colors tracking-wide"
+            >
+              View Calendar
+            </Link>
+          </div>
+
+          {/* Events list */}
+          <div>
+            {EVENTS.map((ev, i) => (
+              <Link
+                key={i}
+                href="/news"
+                className={`flex gap-4 py-3.5 hover:bg-gray-50/80 transition-colors -mx-1 px-1 ${
+                  i < EVENTS.length - 1 ? "border-b border-gray-100" : ""
+                }`}
+              >
+                <div className="shrink-0 w-10 text-center pt-0.5">
+                  <div className="text-[#1e4d2b] text-[10px] font-bold uppercase leading-none tracking-widest">
+                    {ev.month}
+                  </div>
+                  <div className="text-xl font-bold text-gray-900 leading-tight">{ev.day}</div>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="text-gray-800 text-[13px] font-medium leading-snug">{ev.title}</div>
+                  {ev.location && (
+                    <div className="text-gray-400 text-[11px] mt-0.5 truncate">{ev.location}</div>
+                  )}
+                </div>
+              </Link>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <div className="text-[#1e4d2b] text-sm font-semibold tracking-widest uppercase mb-3">About Cooper</div>
-              <h2 className="text-3xl md:text-4xl font-bold font-serif text-gray-900 mb-6">
-                A Tradition of Academic Excellence
-              </h2>
-              <p className="text-gray-600 leading-relaxed mb-5">
-                The John Cooper School is an independent, co-educational, college-preparatory school serving students
-                in grades K through 12. Founded in 1988, Cooper has established itself as one of the premier private
-                schools in Texas, offering a rigorous academic program within a nurturing community environment.
-              </p>
-              <p className="text-gray-600 leading-relaxed mb-8">
-                Our faculty members are experts in their fields, dedicated to challenging and supporting each student
-                to achieve their personal best. Small class sizes ensure individualized attention and foster meaningful
-                connections between teachers and students.
-              </p>
-              <div className="flex gap-4 flex-wrap">
-                <Link href="/about" className="inline-flex items-center gap-2 px-6 py-3 bg-[#1e4d2b] text-white font-semibold text-sm rounded hover:bg-[#163820] transition-colors">
-                  Our Story <ArrowRight size={15} />
-                </Link>
-                <Link href="/admissions" className="inline-flex items-center gap-2 px-6 py-3 border-2 border-[#1e4d2b] text-[#1e4d2b] font-semibold text-sm rounded hover:bg-[#1e4d2b] hover:text-white transition-colors">
-                  Admissions
-                </Link>
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <img
-                src={resolveImage(images, "image4", 3)}
-                alt="Students at Cooper"
-                className="rounded-lg w-full h-56 object-cover"
-              />
-              <img
-                src={resolveImage(images, "image5", 4)}
-                alt="Campus life"
-                className="rounded-lg w-full h-56 object-cover mt-6"
-              />
-              <img
-                src={resolveImage(images, "image6", 5)}
-                alt="Arts program"
-                className="rounded-lg w-full h-56 object-cover"
-              />
-              <img
-                src={resolveImage(images, "image7", 6)}
-                alt="Athletics"
-                className="rounded-lg w-full h-56 object-cover mt-6"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* ── Cooper At A Glance ── */}
+      <section className="py-7 bg-gray-50 border-b border-gray-100">
+        <div className="max-w-2xl mx-auto px-4">
+          <h2 className="text-[17px] font-bold text-gray-900 mb-5">Cooper At A Glance</h2>
 
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-14">
-            <div className="text-[#1e4d2b] text-sm font-semibold tracking-widest uppercase mb-3">Divisions</div>
-            <h2 className="text-3xl md:text-4xl font-bold font-serif text-gray-900">The Cooper Experience</h2>
-            <p className="mt-4 text-gray-500 max-w-xl mx-auto text-sm">
-              From our youngest learners to graduating seniors, every Cooper student benefits from our commitment to excellence.
+          <div className="flex gap-6 mb-6">
+            <p className="flex-1 text-[13px] text-gray-600 leading-relaxed">
+              Established in 1988, The John Cooper School is a college-preparatory, independent
+              Pre-K through Grade 12 school in the Greater Houston Area.
             </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { title: "Lower School", grades: "K – Grade 4", desc: "Building foundational skills through inquiry-based learning in a warm, supportive environment.", img: "image8", idx: 7, href: "/academics#lower" },
-              { title: "Middle School", grades: "Grades 5 – 8", desc: "A pivotal transition where students develop independence, critical thinking, and collaborative skills.", img: "image9", idx: 8, href: "/academics#middle" },
-              { title: "Upper School", grades: "Grades 9 – 12", desc: "A rigorous college-preparatory curriculum with AP courses, dual enrollment, and individualized guidance.", img: "image10", idx: 9, href: "/academics#upper" },
-            ].map((div) => (
-              <Link key={div.title} href={div.href} className="group block">
-                <div className="rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow bg-white">
-                  <div className="relative h-56 overflow-hidden">
-                    <img
-                      src={resolveImage(images, div.img, div.idx)}
-                      alt={div.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                    <div className="absolute bottom-4 left-4">
-                      <div className="text-white/80 text-xs font-medium mb-1">{div.grades}</div>
-                      <h3 className="text-white text-xl font-bold font-serif">{div.title}</h3>
-                    </div>
-                  </div>
-                  <div className="p-6">
-                    <p className="text-gray-600 text-sm leading-relaxed mb-4">{div.desc}</p>
-                    <span className="inline-flex items-center gap-1.5 text-[#1e4d2b] text-sm font-semibold group-hover:gap-2.5 transition-all">
-                      Learn More <ArrowRight size={14} />
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex justify-between items-end mb-12">
-            <div>
-              <div className="text-[#1e4d2b] text-sm font-semibold tracking-widest uppercase mb-2">Latest News</div>
-              <h2 className="text-3xl font-bold font-serif text-gray-900">Cooper in the News</h2>
+            <div className="shrink-0 flex items-start gap-2">
+              <MapPin size={15} className="text-[#1e4d2b] mt-1" />
+              <div>
+                <div className="text-3xl font-bold text-gray-900 leading-none">1,378</div>
+                <div className="text-[10px] text-gray-400 mt-0.5 uppercase tracking-wide">Students</div>
+              </div>
             </div>
-            <Link href="/news" className="hidden md:inline-flex items-center gap-2 text-sm text-[#1e4d2b] font-semibold hover:gap-3 transition-all">
-              View All News <ArrowRight size={15} />
-            </Link>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {NEWS_ITEMS.map((item, i) => (
-              <Link key={i} href="/news" className="group block">
-                <div className="bg-gray-50 rounded-xl overflow-hidden hover:shadow-md transition-shadow">
-                  <div className="h-48 overflow-hidden">
-                    <img
-                      src={resolveImage(images, item.label, item.index)}
-                      alt={item.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+
+          {/* Experience Cooper accordion */}
+          <div className="mt-3 mb-1">
+            <p className="text-[11px] text-gray-400 uppercase tracking-widest font-medium mb-2">
+              Experience Cooper
+            </p>
+            <div className="flex flex-col gap-px">
+              {ACCORDION_ITEMS.map((item) => (
+                <div key={item.id}>
+                  <button
+                    onClick={() => setOpenAccordion(openAccordion === item.id ? null : item.id)}
+                    className="w-full flex items-center justify-between px-4 py-3.5 bg-[#1e4d2b] text-white hover:bg-[#163820] transition-colors"
+                  >
+                    <span className="text-sm font-semibold tracking-wide">{item.label}</span>
+                    <ChevronDown
+                      size={15}
+                      strokeWidth={2.5}
+                      className={`transition-transform duration-200 ${openAccordion === item.id ? "rotate-180" : ""}`}
                     />
-                  </div>
-                  <div className="p-6">
-                    <div className="flex items-center gap-3 mb-3">
-                      <span className="px-2.5 py-0.5 bg-[#1e4d2b]/10 text-[#1e4d2b] text-xs font-semibold rounded-full">
-                        {item.category}
-                      </span>
-                      <span className="text-gray-400 text-xs flex items-center gap-1">
-                        <Calendar size={11} /> {item.date}
-                      </span>
+                  </button>
+                  {openAccordion === item.id && (
+                    <div className="px-4 py-4 bg-white border border-t-0 border-gray-100">
+                      <p className="text-[13px] text-gray-600 leading-relaxed mb-3">{item.content}</p>
+                      <Link
+                        href={item.href}
+                        className="inline-flex items-center gap-1 text-[13px] text-[#1e4d2b] font-semibold hover:underline"
+                      >
+                        {item.label} Online <ChevronRight size={13} />
+                      </Link>
                     </div>
-                    <h3 className="font-bold text-gray-900 mb-2 leading-snug group-hover:text-[#1e4d2b] transition-colors">
-                      {item.title}
-                    </h3>
-                    <p className="text-gray-500 text-sm leading-relaxed line-clamp-3">{item.excerpt}</p>
-                  </div>
+                  )}
                 </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20 bg-[#1e4d2b] text-white">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex justify-between items-end mb-12">
-            <div>
-              <div className="text-white/60 text-sm font-semibold tracking-widest uppercase mb-2">Calendar</div>
-              <h2 className="text-3xl font-bold font-serif">Upcoming Events</h2>
+              ))}
             </div>
-            <Link href="/news#events" className="hidden md:inline-flex items-center gap-2 text-sm text-white/80 hover:text-white font-semibold transition-colors">
-              Full Calendar <ArrowRight size={15} />
-            </Link>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {EVENTS.map((event, i) => (
-              <Link key={i} href={event.href} className="group flex gap-5 bg-white/10 hover:bg-white/15 rounded-xl p-5 transition-colors">
-                <div className="text-center shrink-0 w-14">
-                  <div className="text-white/60 text-xs font-bold uppercase">{event.month}</div>
-                  <div className="text-3xl font-bold font-serif leading-none">{event.day}</div>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-sm leading-snug mb-1 group-hover:underline">{event.title}</h3>
-                  <p className="text-white/60 text-xs">{event.time}</p>
-                </div>
-              </Link>
-            ))}
           </div>
         </div>
       </section>
 
-      <section className="relative py-28 overflow-hidden">
-        <img
-          src={resolveImage(images, "image13", 12)}
-          alt="Cooper campus"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-[#1e4d2b]/85" />
-        <div className="relative max-w-4xl mx-auto text-center px-4">
-          <h2 className="text-3xl md:text-5xl font-bold font-serif text-white mb-6">
-            Ready to Join the Cooper Community?
-          </h2>
-          <p className="text-white/80 text-lg mb-10 max-w-2xl mx-auto">
-            Take the first step toward an extraordinary education. Our admissions team is here to guide you every step of the way.
-          </p>
-          <div className="flex gap-4 justify-center flex-wrap">
-            <Link href="/apply" className="px-8 py-4 bg-white text-[#1e4d2b] font-bold rounded hover:bg-white/90 transition-colors">
-              Apply Now
-            </Link>
-            <Link href="/visit" className="px-8 py-4 border-2 border-white text-white font-bold rounded hover:bg-white/10 transition-colors">
-              Schedule a Visit
-            </Link>
-            <Link href="/inquire" className="px-8 py-4 border-2 border-white/40 text-white font-semibold rounded hover:bg-white/10 transition-colors">
-              Inquire Online
-            </Link>
-          </div>
+      {/* ── School Info Bar ── */}
+      <section className="py-5 bg-white">
+        <div className="max-w-2xl mx-auto px-4 text-center">
+          <p className="text-[13px] font-bold text-gray-800">The John Cooper School</p>
+          <p className="text-[12px] text-gray-500 mt-0.5">One John Cooper Drive, The Woodlands, TX</p>
+          <a
+            href="https://www.johncooper.org"
+            className="text-[12px] text-[#1e4d2b] hover:underline mt-0.5 inline-block"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            johncooper.org
+          </a>
         </div>
       </section>
     </div>
