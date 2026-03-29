@@ -92,9 +92,9 @@ export default function Header() {
     <header className="w-full z-50 sticky top-0 shadow-sm">
 
       {/* ── Top dark bar: Menu (left) + Login (right) ── */}
-      <div className="bg-[#1a1a1a] text-white flex items-center justify-between px-4 h-11">
+      <div className="bg-[#1a1a1a] flex items-center justify-between px-4 h-11 border-b-2 border-[#1e4d2b]">
         <button
-          className="flex items-center gap-2 text-sm font-medium tracking-wide hover:text-white/80 transition-colors"
+          className="flex items-center gap-2 text-sm font-medium tracking-wide text-[#8aab8a] hover:text-[#a8c8a8] transition-colors"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label="Toggle navigation"
         >
@@ -105,7 +105,7 @@ export default function Header() {
           </svg>
           <span>Menu</span>
         </button>
-        <Link href="/login" className="text-sm font-medium hover:text-white/80 transition-colors">
+        <Link href="/login" className="text-sm font-medium text-[#8aab8a] hover:text-[#a8c8a8] transition-colors">
           Login
         </Link>
       </div>
