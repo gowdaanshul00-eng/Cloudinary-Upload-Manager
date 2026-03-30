@@ -92,20 +92,52 @@ export default function Header() {
     <header className="w-full z-50 sticky top-0 shadow-sm">
 
       {/* ── Top dark bar: Menu (left) + Login (right) ── */}
-      <div className="bg-[#1a1a1a] flex items-center justify-between px-4 h-11 border-b-2 border-[#1e4d2b]">
+      <div
+        style={{
+          background: "#000000",
+          borderBottom: "2px solid #1E3020",
+          padding: "12px 20px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
         <button
-          className="flex items-center gap-2 text-sm font-medium tracking-wide text-[#8aab8a] hover:text-[#a8c8a8] transition-colors"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            color: "#7B8B78",
+            fontSize: 15,
+            fontFamily: "Arial, Helvetica, sans-serif",
+            letterSpacing: "0.5px",
+            fontWeight: 500,
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            padding: 0,
+          }}
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label="Toggle navigation"
         >
-          <svg width="18" height="14" viewBox="0 0 18 14" fill="currentColor">
+          <svg width="18" height="14" viewBox="0 0 18 14" fill="#7B8B78">
             <rect y="0" width="18" height="2" rx="1" />
             <rect y="6" width="18" height="2" rx="1" />
             <rect y="12" width="18" height="2" rx="1" />
           </svg>
           <span>Menu</span>
         </button>
-        <Link href="/login" className="text-sm font-medium text-[#8aab8a] hover:text-[#a8c8a8] transition-colors">
+        <Link
+          href="/login"
+          style={{
+            color: "#7B8B78",
+            fontSize: 15,
+            fontFamily: "Arial, Helvetica, sans-serif",
+            letterSpacing: "0.5px",
+            fontWeight: 500,
+            textDecoration: "none",
+          }}
+        >
           Login
         </Link>
       </div>
