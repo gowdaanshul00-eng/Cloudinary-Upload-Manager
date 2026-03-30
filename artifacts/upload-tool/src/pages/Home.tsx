@@ -218,7 +218,7 @@ export default function Home() {
           <img
             src={labPhoto}
             alt="Students working in the lab"
-            className="w-full rounded-sm"
+            className="w-full"
             style={{
               display: "block",
               boxShadow: "0 24px 64px rgba(0,0,0,0.55), 0 8px 24px rgba(0,0,0,0.3)",
