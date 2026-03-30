@@ -95,7 +95,7 @@ export default function Header() {
       <div
         style={{
           background: "#000000",
-          borderBottom: "2px solid #1E3020",
+          borderBottom: "2px solid #3d6b4f",
           padding: "12px 20px",
           display: "flex",
           alignItems: "center",
@@ -107,7 +107,6 @@ export default function Header() {
             display: "flex",
             alignItems: "center",
             gap: 8,
-            color: "#7B8B78",
             fontSize: 15,
             fontFamily: "Arial, Helvetica, sans-serif",
             letterSpacing: "0.5px",
@@ -125,7 +124,7 @@ export default function Header() {
             <rect y="6" width="18" height="2" rx="1" />
             <rect y="12" width="18" height="2" rx="1" />
           </svg>
-          <span>Menu</span>
+          <span style={{ color: "#FFFFFF" }}>Menu</span>
         </button>
         <Link
           href="/login"
