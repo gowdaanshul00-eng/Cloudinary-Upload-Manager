@@ -220,7 +220,7 @@ export default function Home() {
             alt="Students working in the lab"
             className="w-full rounded-sm object-cover"
             style={{
-              height: 210,
+              height: 168,
               boxShadow: "0 24px 64px rgba(0,0,0,0.55), 0 8px 24px rgba(0,0,0,0.3)",
             }}
           />
@@ -231,15 +231,6 @@ export default function Home() {
       {/* ── Cooper Experience ── */}
       <section className="bg-white" style={{ paddingTop: 32, paddingBottom: 28 }}>
         <div className="max-w-sm mx-auto px-5 flex flex-col items-center">
-          {/* Video thumbnail */}
-          <div className="w-full rounded-sm overflow-hidden mb-5 shadow-sm">
-            <img
-              src={videoThumb}
-              alt="Cooper Experience"
-              className="w-full h-44 md:h-56 object-cover object-center"
-            />
-          </div>
-
           {/* Heading */}
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 font-serif text-center leading-tight">
             Cooper<br />Experience
