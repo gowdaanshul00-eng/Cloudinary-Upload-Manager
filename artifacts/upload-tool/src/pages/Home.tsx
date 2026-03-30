@@ -210,7 +210,7 @@ export default function Home() {
           className="absolute left-1/2 z-20"
           style={{
             transform: "translateX(-50%)",
-            bottom: 0,
+            bottom: 55,
             width: "75%",
             maxWidth: 360,
           }}
