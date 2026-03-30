@@ -126,7 +126,7 @@ export default function Header() {
             <rect y="6.75" width="22" height="2.5" rx="1.25" fill="#7B8B78" />
             <rect y="13.5" width="22" height="2.5" rx="1.25" fill="#7B8B78" />
           </svg>
-          <span style={{ color: "#FFFFFF" }}>Menu</span>
+          <span style={{ color: "#7B8B78" }}>Menu</span>
         </button>
         <Link
           href="/login"
