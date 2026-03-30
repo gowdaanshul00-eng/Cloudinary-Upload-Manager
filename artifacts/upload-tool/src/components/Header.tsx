@@ -95,7 +95,7 @@ export default function Header() {
       <div
         style={{
           background: "#000000",
-          borderBottom: "3px solid #3d6b4f",
+          borderBottom: "3px solid #4a7a5a",
           padding: "14px 22px",
           display: "flex",
           alignItems: "center",
