@@ -4,6 +4,7 @@ import { ChevronRight, ChevronLeft, ChevronDown, Play, MapPin } from "lucide-rea
 import { useImages, resolveImage } from "../hooks/useImages";
 import heroImg1 from "@assets/IMG_8420_1774822985971.jpeg";
 import videoThumb from "@assets/IMG_8405_1774822985971.jpeg";
+import labPhoto from "@assets/IMG_8405_1774832061053.jpeg";
 
 const HERO_SLIDES = [
   {
@@ -132,66 +133,91 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white">
 
-      {/* ── Hero Carousel ── */}
-      <section className="relative w-full overflow-hidden" style={{ height: "62vw", minHeight: 340, maxHeight: 620 }}>
-        {HERO_SLIDES.map((s, i) => (
-          <div
-            key={i}
-            className={`absolute inset-0 transition-opacity duration-1000 ${i === slide ? "opacity-100" : "opacity-0"}`}
-          >
-            <img
-              src={s.useLocal && s.img ? s.img : resolveImage(images, s.cloudLabel, s.idx)}
-              alt={s.title}
-              className="w-full h-full object-cover object-center"
-              loading={i === 0 ? "eager" : "lazy"}
-            />
-            {/* Gradient: transparent top → dark bottom for text legibility */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
-          </div>
-        ))}
+      {/* ── Hero Carousel + Floating Lab Photo ── */}
+      <div className="relative">
 
-        {/* Slide nav arrows */}
-        <button
-          onClick={() => setSlide((s) => (s - 1 + HERO_SLIDES.length) % HERO_SLIDES.length)}
-          className="absolute left-2 top-1/2 -translate-y-1/2 z-10 text-white/70 hover:text-white transition-colors p-1"
-          aria-label="Previous"
-        >
-          <ChevronLeft size={28} strokeWidth={2} />
-        </button>
-        <button
-          onClick={() => setSlide((s) => (s + 1) % HERO_SLIDES.length)}
-          className="absolute right-2 top-1/2 -translate-y-1/2 z-10 text-white/70 hover:text-white transition-colors p-1"
-          aria-label="Next"
-        >
-          <ChevronRight size={28} strokeWidth={2} />
-        </button>
-
-        {/* Bottom-left text */}
-        <div className="absolute bottom-10 left-5 right-16 z-10">
-          <h1 className="text-2xl md:text-4xl font-bold text-white font-serif leading-snug mb-1 drop-shadow">
-            {currentSlide.title}
-          </h1>
-          <p className="text-white/85 text-xs md:text-sm leading-relaxed drop-shadow">
-            {currentSlide.subtitle}
-          </p>
-        </div>
-
-        {/* Dots */}
-        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-          {HERO_SLIDES.map((_, i) => (
-            <button
+        <section className="relative w-full overflow-hidden" style={{ height: "62vw", minHeight: 340, maxHeight: 620 }}>
+          {HERO_SLIDES.map((s, i) => (
+            <div
               key={i}
-              onClick={() => setSlide(i)}
-              className={`rounded-full transition-all duration-300 ${
-                i === slide ? "bg-white w-3 h-3" : "bg-white/45 w-2.5 h-2.5"
-              }`}
-            />
+              className={`absolute inset-0 transition-opacity duration-1000 ${i === slide ? "opacity-100" : "opacity-0"}`}
+            >
+              <img
+                src={s.useLocal && s.img ? s.img : resolveImage(images, s.cloudLabel, s.idx)}
+                alt={s.title}
+                className="w-full h-full object-cover object-center"
+                loading={i === 0 ? "eager" : "lazy"}
+              />
+              {/* Gradient: transparent top → dark bottom for text legibility */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+            </div>
           ))}
+
+          {/* Slide nav arrows */}
+          <button
+            onClick={() => setSlide((s) => (s - 1 + HERO_SLIDES.length) % HERO_SLIDES.length)}
+            className="absolute left-2 top-1/2 -translate-y-1/2 z-10 text-white/70 hover:text-white transition-colors p-1"
+            aria-label="Previous"
+          >
+            <ChevronLeft size={28} strokeWidth={2} />
+          </button>
+          <button
+            onClick={() => setSlide((s) => (s + 1) % HERO_SLIDES.length)}
+            className="absolute right-2 top-1/2 -translate-y-1/2 z-10 text-white/70 hover:text-white transition-colors p-1"
+            aria-label="Next"
+          >
+            <ChevronRight size={28} strokeWidth={2} />
+          </button>
+
+          {/* Bottom-left text */}
+          <div className="absolute bottom-10 left-5 right-16 z-10">
+            <h1 className="text-2xl md:text-4xl font-bold text-white font-serif leading-snug mb-1 drop-shadow">
+              {currentSlide.title}
+            </h1>
+            <p className="text-white/85 text-xs md:text-sm leading-relaxed drop-shadow">
+              {currentSlide.subtitle}
+            </p>
+          </div>
+
+          {/* Dots */}
+          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+            {HERO_SLIDES.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setSlide(i)}
+                className={`rounded-full transition-all duration-300 ${
+                  i === slide ? "bg-white w-3 h-3" : "bg-white/45 w-2.5 h-2.5"
+                }`}
+              />
+            ))}
+          </div>
+        </section>
+
+        {/* Floating lab photo — centered, straddles the hero / white-section boundary */}
+        <div
+          className="absolute bottom-0 left-1/2 z-20"
+          style={{
+            transform: "translateX(-50%) translateY(50%)",
+            width: "82%",
+            maxWidth: 340,
+          }}
+        >
+          <img
+            src={labPhoto}
+            alt="Students working in the lab"
+            className="w-full rounded-md object-cover"
+            style={{
+              height: 195,
+              boxShadow: "0 20px 60px rgba(0,0,0,0.35), 0 6px 18px rgba(0,0,0,0.2)",
+              border: "4px solid white",
+            }}
+          />
         </div>
-      </section>
+
+      </div>{/* end hero wrapper */}
 
       {/* ── Cooper Experience ── */}
-      <section className="py-7 bg-white">
+      <section className="bg-white" style={{ paddingTop: 115, paddingBottom: 28 }}>
         <div className="max-w-sm mx-auto px-5 flex flex-col items-center">
           {/* Video thumbnail */}
           <div className="w-full rounded-sm overflow-hidden mb-5 shadow-sm">
