@@ -211,16 +211,16 @@ export default function Home() {
           style={{
             transform: "translateX(-50%)",
             bottom: 55,
-            width: "42%",
-            maxWidth: 160,
+            width: "62%",
+            maxWidth: 260,
           }}
         >
           <img
             src={labPhoto}
             alt="Students working in the lab"
-            className="w-full rounded-sm object-cover"
+            className="w-full rounded-sm"
             style={{
-              height: 145,
+              display: "block",
               boxShadow: "0 24px 64px rgba(0,0,0,0.55), 0 8px 24px rgba(0,0,0,0.3)",
             }}
           />
