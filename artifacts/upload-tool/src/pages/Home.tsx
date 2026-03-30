@@ -134,9 +134,13 @@ export default function Home() {
     <div className="min-h-screen bg-white">
 
       {/* ── Hero Carousel + Floating Lab Photo ── */}
-      <div className="relative">
+      <div className="relative" style={{ paddingBottom: 140 }}>
 
-        <section className="relative w-full overflow-hidden" style={{ height: "62vw", minHeight: 340, maxHeight: 620 }}>
+        {/* Hero */}
+        <section
+          className="relative w-full overflow-hidden"
+          style={{ height: "62vw", minHeight: 360, maxHeight: 600 }}
+        >
           {HERO_SLIDES.map((s, i) => (
             <div
               key={i}
@@ -145,42 +149,47 @@ export default function Home() {
               <img
                 src={s.useLocal && s.img ? s.img : resolveImage(images, s.cloudLabel, s.idx)}
                 alt={s.title}
-                className="w-full h-full object-cover object-center"
+                className="w-full h-full object-cover object-top"
                 loading={i === 0 ? "eager" : "lazy"}
               />
-              {/* Gradient: transparent top → dark bottom for text legibility */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+              {/* Strong gradient: image visible at top, fades hard to black by 50% */}
+              <div className="absolute inset-0" style={{
+                background: "linear-gradient(to bottom, transparent 0%, transparent 20%, rgba(0,0,0,0.55) 45%, rgba(0,0,0,0.92) 70%, #000 100%)"
+              }} />
             </div>
           ))}
 
           {/* Slide nav arrows */}
           <button
             onClick={() => setSlide((s) => (s - 1 + HERO_SLIDES.length) % HERO_SLIDES.length)}
-            className="absolute left-2 top-1/2 -translate-y-1/2 z-10 text-white/70 hover:text-white transition-colors p-1"
+            className="absolute left-2 top-1/2 -translate-y-1/2 z-10 text-white/60 hover:text-white transition-colors p-1"
             aria-label="Previous"
           >
             <ChevronLeft size={28} strokeWidth={2} />
           </button>
           <button
             onClick={() => setSlide((s) => (s + 1) % HERO_SLIDES.length)}
-            className="absolute right-2 top-1/2 -translate-y-1/2 z-10 text-white/70 hover:text-white transition-colors p-1"
+            className="absolute right-2 top-1/2 -translate-y-1/2 z-10 text-white/60 hover:text-white transition-colors p-1"
             aria-label="Next"
           >
             <ChevronRight size={28} strokeWidth={2} />
           </button>
 
-          {/* Bottom-left text */}
-          <div className="absolute bottom-10 left-5 right-16 z-10">
-            <h1 className="text-2xl md:text-4xl font-bold text-white font-serif leading-snug mb-1 drop-shadow">
+          {/* Bottom-left title — large serif */}
+          <div className="absolute bottom-6 left-4 right-4 z-10">
+            <h1
+              className="font-bold text-white font-serif leading-none mb-2"
+              style={{ fontSize: "clamp(2rem, 9vw, 3.6rem)" }}
+            >
               {currentSlide.title}
             </h1>
-            <p className="text-white/85 text-xs md:text-sm leading-relaxed drop-shadow">
+            <p className="text-white/80 text-sm md:text-base leading-snug">
               {currentSlide.subtitle}
             </p>
           </div>
 
-          {/* Dots */}
-          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+          {/* Dots — right-aligned */}
+          <div className="absolute bottom-6 right-4 flex gap-2 z-10">
             {HERO_SLIDES.map((_, i) => (
               <button
                 key={i}
@@ -193,23 +202,26 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Floating lab photo — centered, straddles the hero / white-section boundary */}
+        {/* Dark continuation strip — extends the black gradient below the hero */}
+        <div className="w-full bg-black" style={{ height: 90 }} />
+
+        {/* Floating lab photo — centered, ~70% inside dark zone, ~30% in white below */}
         <div
-          className="absolute bottom-0 left-1/2 z-20"
+          className="absolute left-1/2 z-20"
           style={{
-            transform: "translateX(-50%) translateY(50%)",
-            width: "82%",
-            maxWidth: 340,
+            transform: "translateX(-50%)",
+            bottom: 0,
+            width: "75%",
+            maxWidth: 360,
           }}
         >
           <img
             src={labPhoto}
             alt="Students working in the lab"
-            className="w-full rounded-md object-cover"
+            className="w-full rounded-sm object-cover"
             style={{
-              height: 195,
-              boxShadow: "0 20px 60px rgba(0,0,0,0.35), 0 6px 18px rgba(0,0,0,0.2)",
-              border: "4px solid white",
+              height: 210,
+              boxShadow: "0 24px 64px rgba(0,0,0,0.55), 0 8px 24px rgba(0,0,0,0.3)",
             }}
           />
         </div>
@@ -217,7 +229,7 @@ export default function Home() {
       </div>{/* end hero wrapper */}
 
       {/* ── Cooper Experience ── */}
-      <section className="bg-white" style={{ paddingTop: 115, paddingBottom: 28 }}>
+      <section className="bg-white" style={{ paddingTop: 32, paddingBottom: 28 }}>
         <div className="max-w-sm mx-auto px-5 flex flex-col items-center">
           {/* Video thumbnail */}
           <div className="w-full rounded-sm overflow-hidden mb-5 shadow-sm">
