@@ -211,8 +211,8 @@ export default function Home() {
           style={{
             transform: "translateX(-50%)",
             bottom: 55,
-            width: "75%",
-            maxWidth: 360,
+            width: "42%",
+            maxWidth: 160,
           }}
         >
           <img
