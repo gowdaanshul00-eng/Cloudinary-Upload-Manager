@@ -220,7 +220,7 @@ export default function Home() {
             alt="Students working in the lab"
             className="w-full rounded-sm object-cover"
             style={{
-              height: 168,
+              height: 145,
               boxShadow: "0 24px 64px rgba(0,0,0,0.55), 0 8px 24px rgba(0,0,0,0.3)",
             }}
           />
