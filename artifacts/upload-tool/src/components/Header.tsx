@@ -95,8 +95,8 @@ export default function Header() {
       <div
         style={{
           background: "#000000",
-          borderBottom: "2px solid #3d6b4f",
-          padding: "12px 20px",
+          borderBottom: "3px solid #3d6b4f",
+          padding: "14px 22px",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
@@ -106,23 +106,25 @@ export default function Header() {
           style={{
             display: "flex",
             alignItems: "center",
-            gap: 8,
-            fontSize: 15,
+            gap: 10,
+            fontSize: 17,
             fontFamily: "Arial, Helvetica, sans-serif",
-            letterSpacing: "0.5px",
-            fontWeight: 500,
+            letterSpacing: "0.3px",
+            fontWeight: 700,
             background: "none",
             border: "none",
             cursor: "pointer",
             padding: 0,
+            lineHeight: 1,
           }}
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label="Toggle navigation"
         >
-          <svg width="18" height="14" viewBox="0 0 18 14" fill="#7B8B78">
-            <rect y="0" width="18" height="2" rx="1" />
-            <rect y="6" width="18" height="2" rx="1" />
-            <rect y="12" width="18" height="2" rx="1" />
+          {/* Hamburger — 3 lines, sage green */}
+          <svg width="22" height="16" viewBox="0 0 22 16" fill="none">
+            <rect y="0"  width="22" height="2.5" rx="1.25" fill="#7B8B78" />
+            <rect y="6.75" width="22" height="2.5" rx="1.25" fill="#7B8B78" />
+            <rect y="13.5" width="22" height="2.5" rx="1.25" fill="#7B8B78" />
           </svg>
           <span style={{ color: "#FFFFFF" }}>Menu</span>
         </button>
@@ -130,11 +132,12 @@ export default function Header() {
           href="/login"
           style={{
             color: "#7B8B78",
-            fontSize: 15,
+            fontSize: 17,
             fontFamily: "Arial, Helvetica, sans-serif",
-            letterSpacing: "0.5px",
-            fontWeight: 500,
+            letterSpacing: "0.3px",
+            fontWeight: 700,
             textDecoration: "none",
+            lineHeight: 1,
           }}
         >
           Login
