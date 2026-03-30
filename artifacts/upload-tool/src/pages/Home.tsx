@@ -203,7 +203,7 @@ export default function Home() {
           </div>
 
           {/* Heading */}
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 font-serif text-center leading-tight">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 font-serif text-center leading-tight">
             Cooper<br />Experience
           </h2>
 

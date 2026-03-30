@@ -110,7 +110,7 @@ export default function Header() {
             fontSize: 17,
             fontFamily: "Arial, Helvetica, sans-serif",
             letterSpacing: "0.3px",
-            fontWeight: 700,
+            fontWeight: 800,
             background: "none",
             border: "none",
             cursor: "pointer",
@@ -135,7 +135,7 @@ export default function Header() {
             fontSize: 17,
             fontFamily: "Arial, Helvetica, sans-serif",
             letterSpacing: "0.3px",
-            fontWeight: 700,
+            fontWeight: 800,
             textDecoration: "none",
             lineHeight: 1,
           }}
