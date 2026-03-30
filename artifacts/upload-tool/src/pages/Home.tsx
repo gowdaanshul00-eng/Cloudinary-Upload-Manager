@@ -3,8 +3,15 @@ import { Link } from "wouter";
 import { ChevronRight, ChevronLeft, ChevronDown, Play, MapPin } from "lucide-react";
 import { useImages, resolveImage } from "../hooks/useImages";
 import heroImg1 from "@assets/IMG_8420_1774822985971.jpeg";
-import videoThumb from "@assets/IMG_8405_1774822985971.jpeg";
-import labPhoto from "@assets/IMG_8405_1774832061053.jpeg";
+import cardImg1 from "@assets/IMG_8405_1774834944062.jpeg";
+import cardImg2 from "@assets/IMG_8427_1774834993124.jpeg";
+import cardImg3 from "@assets/IMG_8473_1774835015095.jpeg";
+
+const EXPERIENCE_CARDS = [
+  { id: 1, img: cardImg1, title: "Cooper Experience" },
+  { id: 2, img: cardImg2, title: "Campus Life" },
+  { id: 3, img: cardImg3, title: "Cooper Students" },
+];
 
 const HERO_SLIDES = [
   {
@@ -133,8 +140,8 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white">
 
-      {/* ── Hero Carousel + Floating Lab Photo ── */}
-      <div className="relative" style={{ paddingBottom: 140 }}>
+      {/* ── Hero Carousel ── */}
+      <div className="relative">
 
         {/* Hero */}
         <section
@@ -205,44 +212,87 @@ export default function Home() {
         {/* Dark continuation strip — extends the black gradient below the hero */}
         <div className="w-full bg-black" style={{ height: 90 }} />
 
-        {/* Floating lab photo — centered, ~70% inside dark zone, ~30% in white below */}
-        <div
-          className="absolute left-1/2 z-20"
-          style={{
-            transform: "translateX(-50%)",
-            bottom: 55,
-            width: "62%",
-            maxWidth: 260,
-          }}
-        >
-          <img
-            src={labPhoto}
-            alt="Students working in the lab"
-            className="w-full"
-            style={{
-              display: "block",
-              boxShadow: "0 24px 64px rgba(0,0,0,0.55), 0 8px 24px rgba(0,0,0,0.3)",
-            }}
-          />
-        </div>
-
       </div>{/* end hero wrapper */}
 
-      {/* ── Cooper Experience ── */}
-      <section className="bg-white" style={{ paddingTop: 32, paddingBottom: 28 }}>
-        <div className="max-w-sm mx-auto px-5 flex flex-col items-center">
-          {/* Heading */}
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 font-serif text-center leading-tight">
-            Cooper<br />Experience
-          </h2>
-
-          {/* Divider */}
-          <div className="w-10 h-0.5 bg-gray-300 my-4" />
-
-          {/* Play Video button — orange */}
-          <button className="px-10 py-3 bg-[#D9512C] text-white text-sm font-semibold rounded-full hover:bg-[#C14420] transition-colors shadow-sm">
-            Play Video
-          </button>
+      {/* ── Experience Card Carousel ── */}
+      <section className="bg-white" style={{ marginTop: -100 }}>
+        <div
+          style={{
+            display: "flex",
+            overflowX: "auto",
+            scrollBehavior: "smooth",
+            scrollSnapType: "x mandatory",
+            WebkitOverflowScrolling: "touch" as any,
+            msOverflowStyle: "none" as any,
+            scrollbarWidth: "none" as any,
+            paddingLeft: 20,
+            paddingRight: 20,
+            paddingBottom: 24,
+            gap: 14,
+          }}
+          className="hide-scrollbar"
+        >
+          {EXPERIENCE_CARDS.map((card) => (
+            <div
+              key={card.id}
+              style={{
+                minWidth: "68%",
+                maxWidth: 260,
+                flexShrink: 0,
+                scrollSnapAlign: "center",
+                border: "1px solid #e2e2e2",
+                background: "#fff",
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              {/* Card image */}
+              <img
+                src={card.img}
+                alt={card.title}
+                style={{
+                  width: "100%",
+                  height: 170,
+                  objectFit: "cover",
+                  display: "block",
+                }}
+              />
+              {/* Card body */}
+              <div style={{ padding: "18px 16px 20px", textAlign: "center", flex: 1, display: "flex", flexDirection: "column", alignItems: "center" }}>
+                <h2
+                  style={{
+                    fontFamily: "Georgia, 'Times New Roman', serif",
+                    fontWeight: 800,
+                    fontSize: 26,
+                    lineHeight: 1.15,
+                    color: "#111",
+                    margin: 0,
+                  }}
+                >
+                  {card.title.split(" ").slice(0, Math.ceil(card.title.split(" ").length / 2)).join(" ")}<br />
+                  {card.title.split(" ").slice(Math.ceil(card.title.split(" ").length / 2)).join(" ")}
+                </h2>
+                {/* Green divider */}
+                <div style={{ width: 36, height: 2, background: "#4a7a5a", margin: "14px auto" }} />
+                {/* Play Video button */}
+                <button
+                  style={{
+                    width: "100%",
+                    background: "#D9512C",
+                    color: "#fff",
+                    fontWeight: 700,
+                    fontSize: 15,
+                    padding: "13px 0",
+                    border: "none",
+                    cursor: "pointer",
+                    letterSpacing: "0.2px",
+                  }}
+                >
+                  Play Video
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
